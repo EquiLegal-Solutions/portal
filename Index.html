@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EquiLegal Solutions - Unified Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 min-h-screen font-sans">
+
+    <div id="loginSection" class="h-screen flex items-center justify-center">
+        <div class="bg-white p-10 rounded-lg shadow-xl w-full max-w-md border-t-4 border-slate-800">
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-bold text-slate-800">EquiLegal</h1>
+                <p class="text-sm text-slate-500 mt-1">Centralized Case Distribution Portal</p>
+            </div>
+            <form id="loginForm">
+                <div class="mb-5">
+                    <label class="block text-slate-700 text-sm font-bold mb-2">Official Email</label>
+                    <input type="email" class="border rounded w-full py-3 px-3 focus:ring-2 focus:ring-slate-800 outline-none" placeholder="admin@equilegal.in" required>
+                </div>
+                <div class="mb-6">
+                    <label class="block text-slate-700 text-sm font-bold mb-2">Password</label>
+                    <input type="password" class="border rounded w-full py-3 px-3 focus:ring-2 focus:ring-slate-800 outline-none" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="bg-slate-800 hover:bg-slate-900 text-white font-bold py-3 px-4 w-full rounded transition duration-150">
+                    Secure Login
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div id="dashboardSection" class="hidden">
+        <nav class="bg-slate-900 text-white p-4 shadow-md">
+            <div class="container mx-auto flex justify-between items-center">
+                <h1 class="text-xl font-bold">EquiLegal <span class="text-slate-400 font-light">Solutions</span></h1>
+                <span class="text-sm">Adv. Amandeep Singh</span>
+            </div>
+        </nav>
+
+        <div class="container mx-auto py-8 px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-blue-600">
+                    <p class="text-slate-500 text-xs font-bold uppercase">Total Cases</p>
+                    <h2 id="caseCount" class="text-3xl font-bold">142</h2>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-green-600">
+                    <p class="text-slate-500 text-xs font-bold uppercase">Revenue</p>
+                    <h2 class="text-3xl font-bold text-green-700">₹2,45,000</h2>
+                </div>
+                <button onclick="toggleForm()" class="bg-slate-800 hover:bg-slate-700 text-white rounded-xl shadow-lg flex flex-col items-center justify-center p-6 transition">
+                    <span class="text-2xl">+</span>
+                    <span class="font-bold">Add New Case</span>
+                </button>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                <table class="w-full text-left">
+                    <thead class="bg-slate-50 border-b">
+                        <tr>
+                            <th class="p-4 text-xs font-bold text-slate-500">CLIENT</th>
+                            <th class="p-4 text-xs font-bold text-slate-500">ADVOCATE</th>
+                            <th class="p-4 text-xs font-bold text-slate-500">CATEGORY</th>
+                            <th class="p-4 text-xs font-bold text-slate-500">FEE</th>
+                        </tr>
+                    </thead>
+                    <tbody id="caseTableBody" class="divide-y divide-slate-100">
+                        <tr>
+                            <td class="p-4 text-sm font-medium">Axis Bank</td>
+                            <td class="p-4 text-sm text-slate-600">Adv. Rajesh</td>
+                            <td class="p-4 text-sm text-slate-600">138 NI Act</td>
+                            <td class="p-4 text-sm font-bold">₹15,000</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="caseModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center">
+        <div class="bg-white p-8 rounded-xl w-full max-w-md">
+            <h3 class="text-xl font-bold mb-4">Register New Case</h3>
+            <form id="caseForm">
+                <input id="clientName" type="text" placeholder="Client Name" class="w-full border p-2 mb-3 rounded" required>
+                <input id="advocateName" type="text" placeholder="Assigned Advocate" class="w-full border p-2 mb-3 rounded" required>
+                <select id="category" class="w-full border p-2 mb-3 rounded">
+                    <option>138 NI Act</option>
+                    <option>Quashing Petition</option>
+                    <option>Recovery Suit</option>
+                </select>
+                <input id="caseFee" type="number" placeholder="Total Fee (₹)" class="w-full border p-2 mb-6 rounded" required>
+                <div class="flex space-x-3">
+                    <button type="button" onclick="toggleForm()" class="flex-1 py-2 bg-slate-200 rounded">Cancel</button>
+                    <button type="submit" class="flex-1 py-2 bg-slate-800 text-white rounded">Save Case</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Logic 1: Simultaneous Login Transition
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            document.getElementById('loginSection').classList.add('hidden');
+            document.getElementById('dashboardSection').classList.remove('hidden');
+        });
+
+        // Logic 2: Toggle Case Entry Form
+        function toggleForm() {
+            const modal = document.getElementById('caseModal');
+            modal.classList.toggle('hidden');
+        }
+
+        // Logic 3: Handle Form Submission (Adds to the list immediately)
+        document.getElementById('caseForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const table = document.getElementById('caseTableBody');
+            const row = table.insertRow(0);
+            row.innerHTML = `
+                <td class="p-4 text-sm font-medium">${document.getElementById('clientName').value}</td>
+                <td class="p-4 text-sm text-slate-600">${document.getElementById('advocateName').value}</td>
+                <td class="p-4 text-sm text-slate-600">${document.getElementById('category').value}</td>
+                <td class="p-4 text-sm font-bold">₹${document.getElementById('caseFee').value}</td>
+            `;
+            toggleForm();
+            e.target.reset();
+        });
+    </script>
+</body>
+</html>
